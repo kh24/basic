@@ -1,10 +1,5 @@
 class TopicsController < ApplicationController
-  private
-
-  def topic_params
-    params.require(:topic).permit(:name, :description, :public)
-  end
-
+  
   def index
     @topics = Topic.all
     authorize @topics
@@ -18,7 +13,8 @@ class TopicsController < ApplicationController
   def show
     @topic = Topic.find(params[:id])
     @posts = @topic.posts
-      end
+    authorize @topic
+  end
 
   def edit
     @topic = Topic.find(params[:id])
@@ -42,8 +38,15 @@ class TopicsController < ApplicationController
     if @topic.update_attributes(topic_params)
       redirect_to @topic
     else
-      flash[:error] = "Erro saving topic.Please try again"
+      flash[:error] = "Error saving topic. Please try again"
       render :edit
     end
   end
+
+  private
+
+  def topic_params
+    params.require(:topic).permit(:name, :description, :public)
+  end
+
 end
