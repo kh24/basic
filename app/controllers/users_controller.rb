@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filer :authenticate_user!
+  before_filter :authenticate_user!
 
   def update
     if current_user.update_attributes(user_params)
